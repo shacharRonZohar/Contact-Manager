@@ -1,0 +1,13 @@
+.app-material-bar {
+    max-height: 70px;
+
+    >* {
+        height: 100%
+    }
+
+    a.logo {
+        font-family: Grandstander;
+        font-size: 30px;
+        color: $clr3;
+    }
+}

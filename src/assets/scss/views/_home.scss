@@ -1,0 +1,11 @@
+.clear-btn {
+    margin: 15px;
+}
+
+form>*:not(button) {
+    height: 2rem;
+    border-radius: 5px;
+    border: 1.5px solid $clr4;
+    outline: none;
+    margin-inline-end: 5px;
+}
