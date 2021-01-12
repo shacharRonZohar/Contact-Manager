@@ -40,6 +40,10 @@ export function Home() {
         contactService.sendInvitation(zoomUrl, contactNum)
     }
 
+    const onSendStartMsg = (contactNum) => {
+        contactService.sendStartMsg(contactNum)
+    }
+
     const onDeleteContact = (contactId) => {
         contactService.remove(contactId)
         loadContacts()
@@ -65,7 +69,12 @@ export function Home() {
             </form>
             <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl}/>
             <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
-            <ContactList contacts={contacts} onSendCheckMsg={onSendCheckMsg} onDeleteContact={onDeleteContact} onSendInvitation={onSendInvitation} />
+            <ContactList contacts={contacts} 
+            onSendCheckMsg={onSendCheckMsg} 
+            onDeleteContact={onDeleteContact} 
+            onSendInvitation={onSendInvitation} 
+            onSendStartMsg ={onSendStartMsg}
+            />
         </section>
     )
 }

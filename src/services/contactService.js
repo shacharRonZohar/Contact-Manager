@@ -8,6 +8,7 @@ export const contactService = {
     getContacts,
     sendCheckMsg,
     sendInvitation,
+    sendStartMsg,
     remove
 }
 
@@ -38,6 +39,12 @@ function sendCheckMsg(contact) {
 function sendInvitation(url , num) {
     let valiNum = _getValidNum(num)
     let res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
+    window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+}
+
+function sendStartMsg(num) {
+    let valiNum = _getValidNum(num)
+    let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`); 
     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
 }
 
