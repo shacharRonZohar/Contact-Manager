@@ -12,7 +12,7 @@ export function ContactList({ contacts, onSendMsg }) {
                     contact={contact}
                     onSendMsg={onSendMsg}
                     // onSendCheckMsg={onSendCheckMsg}
-                    // onDeleteContact={onDeleteContact}
+                    onDeleteContact={onDeleteContact}
                     // onSendInvitation={onSendInvitation}
                     // onSendStartMsg={onSendStartMsg}
                 ></ContactPreview>)
