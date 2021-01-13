@@ -4,11 +4,13 @@ import { utilService } from "./utilService";
 const CONTACT_KEY= 'myContacts'
 
 export const contactService = {
-    sendMsg,
+    addContact,
     getContacts,
-    sendCheckMsg,
-    sendInvitation,
-    sendStartMsg,
+    // sendCheckMsg,
+    // sendInvitation,
+    // sendStartMsg,
+    sendMsg,
+    setContactStatus,
     remove
 }
 
@@ -18,34 +20,59 @@ function getContacts() {
     return gContacts
 }
 
-function sendMsg(contact) {
+function addContact(contact) {
     console.log("🚀 ~ file: contactService.js ~ line 6 ~ sendMsg ~ num", contact.num)
     if (!contact.num || contact.num.length < 10) {
         console.log('invalid num');
         return
     };
-    var valiNum = _getValidNum(contact.num)
-    var result = "https://api.whatsapp.com/send?phone=972" + valiNum;
+    // var valiNum = _getValidNum(contact.num)
+    // var result = "https://api.whatsapp.com/send?phone=972" + valiNum;
     _saveContact(contact)
-    window.open(result, "_blank");
+    // window.open(result, "_blank");
 }
 
-function sendCheckMsg(contact) {
+function sendMsg(contact, status, url) {
     let valiNum = _getValidNum(contact.num)
-    let res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! את/ה מגיע/ה?`); 
+    let res;
+    switch (status) {
+        case 'first-step':
+            res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! אני אראה אותך שם?`); 
+            break;
+        case 'second-step':
+            res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
+            break;
+        case 'third-step':
+            res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`);    
+            break;
+        default:
+            break;
+    }
+    setContactStatus(contact.id, status)
     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
 }
 
-function sendInvitation(url , num) {
-    let valiNum = _getValidNum(num)
-    let res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
-    window.open(`https://wa.me/972${valiNum}/?text=${res}`)
-}
+// function sendCheckMsg(contact) {
+//     let valiNum = _getValidNum(contact.num)
+//     let res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! את/ה מגיע/ה?`); 
+//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+// }
 
-function sendStartMsg(num) {
-    let valiNum = _getValidNum(num)
-    let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`); 
-    window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+// function sendInvitation(url , num) {
+//     let valiNum = _getValidNum(num)
+//     let res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
+//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+// }
+
+// function sendStartMsg(num) {
+//     let valiNum = _getValidNum(num)
+//     let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`); 
+//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+// }
+
+function setContactStatus(contactId, newStatus) {
+    const idx = _getIdxById(contactId) 
+    gContacts[idx].status = newStatus
 }
 
 function remove(contactId) {
@@ -59,6 +86,10 @@ function remove(contactId) {
 // Local Functions
 function _getValidNum(num) {
     return num.split('').filter((char) => char !== '-').join('')
+}
+
+function _getIdxById(id) {
+    return gContacts.findIndex(contact => contact.id === id)
 }
 
 

@@ -1,12 +1,14 @@
 import React from 'react'
 
-export function ContactPreview({contact, onSendCheckMsg, onDeleteContact, onSendInvitation,onSendStartMsg}) {
+// export function ContactPreview({contact, onSendCheckMsg, onDeleteContact, onSendInvitation,onSendStartMsg}) {
+export function ContactPreview({contact, onSendMsg, onDeleteContact}) {
+    console.log(contact);
     return (
-        <li className="contact-preview">
+        <li className={`contact-preview ${contact.status}`}>
             <h1>{contact.name} - {contact.num}</h1>
-            <button onClick={() => onSendCheckMsg(contact)}>send check msg</button>
-            <button onClick={() => onSendInvitation(contact.num)}>send invitation msg</button>
-            <button onClick={() => onSendStartMsg(contact.num)}>send start msg</button>
+            <button onClick={() => onSendMsg(contact, 'first-step')}>send check msg</button>
+            <button onClick={() => onSendMsg(contact, 'second-step')}>send invitation msg</button>
+            <button onClick={() => onSendMsg(contact, 'third-step')}>send start msg</button>
             <button onClick={() => onDeleteContact(contact.id)}>X</button>
         </li>
     )

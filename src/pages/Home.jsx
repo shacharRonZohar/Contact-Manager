@@ -6,7 +6,7 @@ import { storageService } from '../services/storageService'
 export function Home() {
 
     const [contacts, setContacts] = useState([])
-    const [contact, setContact] = useState({ name: '', num: '' })
+    const [contact, setContact] = useState({ name: '', num: '', status: '' })
     const [zoomUrl, setZoomUrl] = useState('')
 
     useEffect(() => {
@@ -19,10 +19,10 @@ export function Home() {
         setContacts([...contacts])
     }
 
-    const onSendMsg = (ev) => {
+    const onAddContact = (ev) => {
         ev.preventDefault();
         console.log(contact);
-        contactService.sendMsg(contact)
+        contactService.addContact(contact)
         setContact({ name: '', num: '' })
     }
 
@@ -32,17 +32,28 @@ export function Home() {
         })
     }
 
-    const onSendCheckMsg = (currContact) => {
-        contactService.sendCheckMsg(currContact)
+    const onSendMsg = (currContact, status) => {
+        contactService.sendMsg(currContact, status, zoomUrl)
+        loadContacts()
     }
 
-    const onSendInvitation = (contactNum) => {
-        contactService.sendInvitation(zoomUrl, contactNum)
-    }
+    // const onSendCheckMsg = (currContact) => {
+    //     contactService.sendCheckMsg(currContact)
+    //     contactService.setContactStatus(currContact.id, 'first-step')
+    //     loadContacts()
+    // }
 
-    const onSendStartMsg = (contactNum) => {
-        contactService.sendStartMsg(contactNum)
-    }
+    // const onSendInvitation = (currContact) => {
+    //     contactService.sendInvitation(zoomUrl, currContact.num)
+    //     contactService.setContactStatus(currContact.id, 'second-step')
+    //     loadContacts()
+    // }
+
+    // const onSendStartMsg = (currContact) => {
+    //     contactService.sendStartMsg(currContact.num)
+    //     contactService.setContactStatus(currContact.id, 'third-step')
+    //     loadContacts()
+    // }
 
     const onDeleteContact = (contactId) => {
         contactService.remove(contactId)
@@ -55,25 +66,26 @@ export function Home() {
     }
 
     const onSetZoomUrl = (ev) => {
-        setZoomUrl(ev.target.value)        
+        setZoomUrl(ev.target.value)
     }
 
 
     return (
         <section className="homepage">
             <h1>Contacts-Manager</h1>
-            <form onSubmit={(ev) => onSendMsg(ev)}>
+            <form onSubmit={(ev) => onAddContact(ev)}>
                 <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
                 <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
                 <button>send</button>
             </form>
-            <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl}/>
+            <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
             <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
-            <ContactList contacts={contacts} 
-            onSendCheckMsg={onSendCheckMsg} 
-            onDeleteContact={onDeleteContact} 
-            onSendInvitation={onSendInvitation} 
-            onSendStartMsg ={onSendStartMsg}
+            <ContactList contacts={contacts}
+                onSendMsg={onSendMsg}
+                // onSendCheckMsg={onSendCheckMsg}
+                onDeleteContact={onDeleteContact}
+                // onSendInvitation={onSendInvitation}
+                // onSendStartMsg={onSendStartMsg}
             />
         </section>
     )
