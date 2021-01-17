@@ -6,9 +6,6 @@ const CONTACT_KEY= 'myContacts'
 export const contactService = {
     addContact,
     getContacts,
-    // sendCheckMsg,
-    // sendInvitation,
-    // sendStartMsg,
     sendMsg,
     setContactStatus,
     remove
@@ -16,8 +13,10 @@ export const contactService = {
 
 var gContacts = storageService.loadFromStorage(CONTACT_KEY) || []
 
-function getContacts() {
-    return gContacts
+function getContacts(filter = {}) {
+    if (!filter.status) return gContacts;
+    const contacts = gContacts.filter(contact => contact.status === filter.status)
+    return contacts
 }
 
 function addContact(contact) {
@@ -26,10 +25,7 @@ function addContact(contact) {
         console.log('invalid num');
         return
     };
-    // var valiNum = _getValidNum(contact.num)
-    // var result = "https://api.whatsapp.com/send?phone=972" + valiNum;
     _saveContact(contact)
-    // window.open(result, "_blank");
 }
 
 function sendMsg(contact, status, url) {
@@ -52,6 +48,46 @@ function sendMsg(contact, status, url) {
     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
 }
 
+
+function setContactStatus(contactId, newStatus) {
+    const idx = _getIdxById(contactId) 
+    gContacts[idx].status = newStatus
+    _saveToStorage()
+}
+
+function remove(contactId) {
+    const idx = gContacts.findIndex(contact => contact.id === contactId)
+    const removedContact = gContacts.splice(idx, 1)
+    _saveToStorage()
+    return removedContact
+}
+
+
+// Local Functions
+
+function _getValidNum(num) {
+    return num.split('').filter((char) => char !== '-').join('')
+}
+
+function _getIdxById(id) {
+    return gContacts.findIndex(contact => contact.id === id)
+}
+
+function _saveContact(contact) {
+    contact.id = utilService.makeId()
+    gContacts.push(contact)
+    _saveToStorage()
+}
+
+function _saveToStorage() {
+    storageService.saveToStorage(CONTACT_KEY, gContacts)
+}
+
+
+
+// DEPRECAED
+
+
 // function sendCheckMsg(contact) {
 //     let valiNum = _getValidNum(contact.num)
 //     let res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! את/ה מגיע/ה?`); 
@@ -69,36 +105,3 @@ function sendMsg(contact, status, url) {
 //     let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`); 
 //     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
 // }
-
-function setContactStatus(contactId, newStatus) {
-    const idx = _getIdxById(contactId) 
-    gContacts[idx].status = newStatus
-}
-
-function remove(contactId) {
-    const idx = gContacts.findIndex(contact => contact.id === contactId)
-    const removedContact = gContacts.splice(idx, 1)
-    _saveToStorage()
-    return removedContact
-}
-
-
-// Local Functions
-function _getValidNum(num) {
-    return num.split('').filter((char) => char !== '-').join('')
-}
-
-function _getIdxById(id) {
-    return gContacts.findIndex(contact => contact.id === id)
-}
-
-
-function _saveContact(contact) {
-    contact.id = utilService.makeId()
-    gContacts.push(contact)
-    _saveToStorage()
-}
-
-function _saveToStorage() {
-    storageService.saveToStorage(CONTACT_KEY, gContacts)
-}

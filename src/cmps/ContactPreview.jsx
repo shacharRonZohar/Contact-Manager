@@ -1,6 +1,5 @@
 import React from 'react'
 
-// export function ContactPreview({contact, onSendCheckMsg, onDeleteContact, onSendInvitation,onSendStartMsg}) {
 export function ContactPreview({contact, onSendMsg, onDeleteContact}) {
     console.log(contact);
     return (

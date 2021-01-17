@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { ContactFilter } from '../cmps/ContactFilter'
 import { ContactList } from '../cmps/ContactList'
 import { contactService } from '../services/contactService'
 import { storageService } from '../services/storageService'
@@ -14,8 +15,8 @@ export function Home() {
         console.log(contact)
     }, [contact])
 
-    const loadContacts = () => {
-        const contacts = contactService.getContacts()
+    const loadContacts = (filter) => {
+        const contacts = contactService.getContacts(filter)
         setContacts([...contacts])
     }
 
@@ -37,24 +38,6 @@ export function Home() {
         loadContacts()
     }
 
-    // const onSendCheckMsg = (currContact) => {
-    //     contactService.sendCheckMsg(currContact)
-    //     contactService.setContactStatus(currContact.id, 'first-step')
-    //     loadContacts()
-    // }
-
-    // const onSendInvitation = (currContact) => {
-    //     contactService.sendInvitation(zoomUrl, currContact.num)
-    //     contactService.setContactStatus(currContact.id, 'second-step')
-    //     loadContacts()
-    // }
-
-    // const onSendStartMsg = (currContact) => {
-    //     contactService.sendStartMsg(currContact.num)
-    //     contactService.setContactStatus(currContact.id, 'third-step')
-    //     loadContacts()
-    // }
-
     const onDeleteContact = (contactId) => {
         contactService.remove(contactId)
         loadContacts()
@@ -69,24 +52,24 @@ export function Home() {
         setZoomUrl(ev.target.value)
     }
 
+    const onSetFilter = (filter) => {
+        console.log(filter);
+        loadContacts(filter)
+    }
+
 
     return (
         <section className="homepage">
             <h1>Contacts-Manager</h1>
-            <form onSubmit={(ev) => onAddContact(ev)}>
+            <form className="main-form" onSubmit={(ev) => onAddContact(ev)}>
                 <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
                 <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
-                <button>send</button>
+                <button>add</button>
             </form>
             <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
             <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
-            <ContactList contacts={contacts}
-                onSendMsg={onSendMsg}
-                // onSendCheckMsg={onSendCheckMsg}
-                onDeleteContact={onDeleteContact}
-                // onSendInvitation={onSendInvitation}
-                // onSendStartMsg={onSendStartMsg}
-            />
+            <ContactFilter onSetFilter={onSetFilter}/>
+            <ContactList contacts={contacts} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} />
         </section>
     )
 }
