@@ -12,7 +12,6 @@ export function Home() {
 
     useEffect(() => {
         loadContacts()
-        console.log(contact)
     }, [contact])
 
     const loadContacts = (filter) => {

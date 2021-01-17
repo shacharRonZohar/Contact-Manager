@@ -22,15 +22,15 @@ export function ContactFilter({ onSetFilter }) {
             </label>
             <label htmlFor="first">
             <input type="radio" name="status" id="first" value="first-step" onChange={handleChange} />
-            first step 
+            checked
             </label>
             <label htmlFor="second">
             <input type="radio" name="status" id="second" value="second-step" onChange={handleChange} />
-            second step
+            invited
             </label>
             <label htmlFor="third">
             <input type="radio" name="status" id="third" value="third-step" onChange={handleChange} />
-            third step
+            finished process
             </label>
         </form>
     )

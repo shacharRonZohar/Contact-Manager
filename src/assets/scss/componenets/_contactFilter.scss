@@ -1,0 +1,18 @@
+.contact-filter {
+    font-size: 1.2rem;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom: 1px solid #95adbe;
+    padding: 5px;
+
+    &>* {
+        margin-inline-end: 7px;
+        cursor: pointer;
+    }
+
+    input {
+        cursor: pointer;
+        margin-inline-end: 7px;
+        width: 0.8rem;
+        height: 1rem;
+    }
+}
