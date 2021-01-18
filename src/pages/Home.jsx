@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ContactFilter } from '../cmps/ContactFilter'
 import { ContactList } from '../cmps/ContactList'
 import { contactService } from '../services/contactService'
@@ -7,7 +7,7 @@ import { storageService } from '../services/storageService'
 export function Home() {
 
     const [contacts, setContacts] = useState([])
-    const [contact, setContact] = useState({ name: '', num: '', status: '' })
+    const [contact, setContact] = useState({ name: '', num: '', status: '', info: '' })
     const [zoomUrl, setZoomUrl] = useState('')
 
     useEffect(() => {
@@ -51,11 +51,27 @@ export function Home() {
         setZoomUrl(ev.target.value)
     }
 
+    const onAddInfo = (ev, contactId) => {
+        const txt = ev.target.textContent
+        console.log(ev.target.textContent, contactId);
+        contactService.addInfo(txt, contactId)
+    }
+
     const onSetFilter = (filter) => {
         console.log(filter);
         loadContacts(filter)
     }
 
+    const onDragEnd = useCallback((res) => {
+        // the only one that is required
+        const { destination, source, draggableId } = res;
+        const newIdx = destination.index
+        const prevIdx = source.index
+        contactService.updateContactIdx(newIdx , prevIdx)
+        console.log(res);
+        loadContacts()
+      }, []);
+    
 
     return (
         <section className="homepage">
@@ -68,7 +84,7 @@ export function Home() {
             <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
             <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
             <ContactFilter onSetFilter={onSetFilter}/>
-            <ContactList contacts={contacts} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} />
+            <ContactList contacts={contacts} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} onAddInfo={onAddInfo}/>
         </section>
     )
 }

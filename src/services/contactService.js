@@ -1,14 +1,16 @@
 import { storageService } from "./storageService";
 import { utilService } from "./utilService";
 
-const CONTACT_KEY= 'myContacts'
+const CONTACT_KEY = 'myContacts'
 
 export const contactService = {
     addContact,
     getContacts,
     sendMsg,
     setContactStatus,
-    remove
+    remove,
+    addInfo,
+    updateContactIdx
 }
 
 var gContacts = storageService.loadFromStorage(CONTACT_KEY) || []
@@ -33,13 +35,13 @@ function sendMsg(contact, status, url) {
     let res;
     switch (status) {
         case 'first-step':
-            res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! אני אראה אותך שם?`); 
+            res = encodeURI(`אהלן ${contact.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! אני אראה אותך שם?`);
             break;
         case 'second-step':
-            res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
+            res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`);
             break;
         case 'third-step':
-            res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`);    
+            res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`);
             break;
         default:
             break;
@@ -50,8 +52,14 @@ function sendMsg(contact, status, url) {
 
 
 function setContactStatus(contactId, newStatus) {
-    const idx = _getIdxById(contactId) 
+    const idx = _getIdxById(contactId)
     gContacts[idx].status = newStatus
+    _saveToStorage()
+}
+
+function addInfo(txt, contactId) {
+    const idx = _getIdxById(contactId)
+    gContacts[idx].info = txt
     _saveToStorage()
 }
 
@@ -60,6 +68,12 @@ function remove(contactId) {
     const removedContact = gContacts.splice(idx, 1)
     _saveToStorage()
     return removedContact
+}
+
+function updateContactIdx(newIdx, PrevIdx) {
+    const contactArr = gContacts.splice(PrevIdx, 1)
+    gContacts.splice(newIdx, 0, contactArr[0])
+    _saveToStorage()
 }
 
 
