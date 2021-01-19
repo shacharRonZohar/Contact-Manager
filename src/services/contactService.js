@@ -99,7 +99,7 @@ function _saveToStorage() {
 
 
 
-// DEPRECAED
+// DEPRECATED
 
 
 // function sendCheckMsg(contact) {
