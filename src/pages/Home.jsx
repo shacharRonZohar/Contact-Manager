@@ -9,12 +9,14 @@ export function Home() {
     const [contacts, setContacts] = useState([])
     const [contact, setContact] = useState({ name: '', num: '', status: '', info: '' })
     const [zoomUrl, setZoomUrl] = useState('')
+    const [filter, setFilter] = useState({ status: '' })
 
     useEffect(() => {
         loadContacts()
-    }, [contact])
+    }, [contact, filter])
 
-    const loadContacts = (filter) => {
+    const loadContacts = () => {
+        console.log("filter:", filter);
         const contacts = contactService.getContacts(filter)
         setContacts([...contacts])
     }
@@ -58,8 +60,8 @@ export function Home() {
     }
 
     const onSetFilter = (filter) => {
-        console.log(filter);
-        loadContacts(filter)
+    console.log("🚀 ~ file: Home.jsx ~ line 63 ~ onSetFilter ~ filter", filter)
+        setFilter(filter)
     }
 
     const onDragEnd = useCallback((res) => {
@@ -76,6 +78,7 @@ export function Home() {
     return (
         <section className="homepage">
             <h1>Contacts-Manager</h1>
+            <h2>on the list now: {contacts.length}</h2>
             <form className="main-form" onSubmit={(ev) => onAddContact(ev)}>
                 <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
                 <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
