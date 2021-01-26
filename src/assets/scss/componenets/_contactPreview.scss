@@ -2,18 +2,25 @@
     border-bottom: 1px solid $clr4;
     padding: 10px;
     width: 100%;
+    min-height: rem(100px);
 
-    .contact-actions>* {
-        margin-bottom: 5px;
+    &>* {
+        width: 30%;
     }
 
+    .contact-actions {
+        justify-content: flex-end;
+    }
+
+
     p {
+        cursor: text;
         border: 1px solid $clr4;
         font-size: 1.1rem;
         padding: 10px;
-        max-width: 40%;
-        min-width: 20%;
         border-radius: 5px;
+
+
     }
 }
 

@@ -60,34 +60,41 @@ export function Home() {
     }
 
     const onSetFilter = (filter) => {
-    console.log("🚀 ~ file: Home.jsx ~ line 63 ~ onSetFilter ~ filter", filter)
+        console.log("🚀 ~ file: Home.jsx ~ line 63 ~ onSetFilter ~ filter", filter)
         setFilter(filter)
     }
 
     const onDragEnd = useCallback((res) => {
         // the only one that is required
         const { destination, source, draggableId } = res;
+        if (!destination) return
         const newIdx = destination.index
         const prevIdx = source.index
-        contactService.updateContactIdx(newIdx , prevIdx)
+        contactService.updateContactIdx(newIdx, prevIdx)
         console.log(res);
         loadContacts()
-      }, []);
-    
+    }, []);
+
 
     return (
-        <section className="homepage">
-            <h1>Contacts-Manager</h1>
-            <h2>on the list now: {contacts.length}</h2>
-            <form className="main-form" onSubmit={(ev) => onAddContact(ev)}>
-                <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
-                <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
-                <button>add</button>
-            </form>
-            <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
-            <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
-            <ContactFilter onSetFilter={onSetFilter}/>
-            <ContactList contacts={contacts} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} onAddInfo={onAddInfo}/>
-        </section>
+        <main className="homepage">
+            <section className="main-section flex column space-between align-center">
+                <h1>Contacts-Manager</h1>
+                <h2>on the list now: {contacts.length}</h2>
+                <form className="main-form" onSubmit={(ev) => onAddContact(ev)}>
+                    <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
+                    <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
+                    <button>add</button>
+                </form>
+                <div className="zoom-clear-wrapper">
+                    <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
+                    <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
+                </div>
+                <ContactFilter onSetFilter={onSetFilter} />
+            </section>
+            {/* <section className="main-container"> */}
+            <ContactList contacts={contacts} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} onAddInfo={onAddInfo} />
+            {/* </section> */}
+        </main>
     )
 }

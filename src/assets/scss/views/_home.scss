@@ -1,11 +1,24 @@
-.clear-btn {
-    margin: 15px;
-}
+.homepage {
 
-.main-form>*:not(button) {
-    height: 2rem;
-    border-radius: 5px;
-    border: 1.5px solid $clr4;
-    outline: none;
-    margin-inline-end: 5px;
+    .main-section {
+        padding-top: 10px;
+        height: 200px;
+        position: fixed;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: 1px solid #95adbe;
+
+        .main-form{
+            // margin-bottom: 15px;
+        }
+
+        .main-form>*:not(button) {
+            height: 2rem;
+            border-radius: 5px;
+            border: 1.5px solid $clr4;
+            outline: none;
+            margin-inline-end: 5px;
+        }
+    }
+    
 }

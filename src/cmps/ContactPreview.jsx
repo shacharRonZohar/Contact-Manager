@@ -11,7 +11,7 @@ export function ContactPreview({ contact, onSendMsg, onDeleteContact, onAddInfo,
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}>
-                    <h1>{contact.name} - {contact.num}</h1>
+                    <h1 className="flex">{contact.name} - {contact.num}</h1>
                     <p suppressContentEditableWarning={true} contentEditable onInput={(ev) => onAddInfo(ev, contact.id)}>{contact.info}</p>
                     <section className="contact-actions flex">
                         <div className="contact-action-wrapper">
