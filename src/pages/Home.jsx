@@ -1,51 +1,51 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ContactFilter } from '../cmps/ContactFilter'
-import { ContactList } from '../cmps/ContactList'
-import { contactService } from '../services/contactService'
+import { LeadFilter } from '../cmps/lead/LeadFilter'
+import { LeadList } from '../cmps/lead/LeadList'
+import { leadService } from '../services/leadService'
 import { storageService } from '../services/storageService'
 
 export function Home() {
 
-    const [contacts, setContacts] = useState([])
-    const [contact, setContact] = useState({ name: '', num: '', status: '', info: '' })
+    const [leads, setLeads] = useState([])
+    const [lead, setLead] = useState({ name: '', num: '', status: '', info: '' })
     const [zoomUrl, setZoomUrl] = useState('')
     const [filter, setFilter] = useState({ status: '' })
 
     useEffect(() => {
-        loadContacts()
-    }, [contact, filter])
+        loadLeads()
+    }, [lead, filter])
 
-    const loadContacts = () => {
+    const loadLeads = () => {
         console.log("filter:", filter);
-        const contacts = contactService.getContacts(filter)
-        setContacts([...contacts])
+        const leads = leadService.getLeads(filter)
+        setLeads([...leads])
     }
 
-    const onAddContact = (ev) => {
+    const onAddLead = (ev) => {
         ev.preventDefault();
-        console.log(contact);
-        contactService.addContact(contact)
-        setContact({ name: '', num: '' })
+        console.log(lead);
+        leadService.addLead(lead)
+        setLead({ name: '', num: '' })
     }
 
     const onInputChange = (ev) => {
-        setContact({
-            ...contact, [ev.target.name]: ev.target.value
+        setLead({
+            ...lead, [ev.target.name]: ev.target.value
         })
     }
 
-    const onSendMsg = (currContact, status) => {
-        contactService.sendMsg(currContact, status, zoomUrl)
-        loadContacts()
+    const onSendMsg = (currLead, status) => {
+        leadService.sendMsg(currLead, status, zoomUrl)
+        loadLeads()
     }
 
-    const onDeleteContact = (contactId) => {
-        contactService.remove(contactId)
-        loadContacts()
+    const onDeleteLead = (leadId) => {
+        leadService.remove(leadId)
+        loadLeads()
     }
 
     function onClearStorage() {
-        storageService.clearStorage()
+        storageService.saveToStorage('myLeads', null)
         window.location.reload();
     }
 
@@ -53,10 +53,10 @@ export function Home() {
         setZoomUrl(ev.target.value)
     }
 
-    const onAddInfo = (ev, contactId) => {
+    const onAddInfo = (ev, leadId) => {
         const txt = ev.target.textContent
-        console.log(ev.target.textContent, contactId);
-        contactService.addInfo(txt, contactId)
+        console.log(ev.target.textContent, leadId);
+        leadService.addInfo(txt, leadId)
     }
 
     const onSetFilter = (filter) => {
@@ -70,30 +70,30 @@ export function Home() {
         if (!destination) return
         const newIdx = destination.index
         const prevIdx = source.index
-        contactService.updateContactIdx(newIdx, prevIdx)
+        leadService.updateLeadIdx(newIdx, prevIdx)
         console.log(res);
-        loadContacts()
+        loadLeads()
     }, []);
 
 
     return (
         <main className="homepage">
             <section className="main-section flex column space-between align-center">
-                <h1>Contacts-Manager</h1>
-                <h2>on the list now: {contacts.length}</h2>
-                <form className="main-form" onSubmit={(ev) => onAddContact(ev)}>
-                    <input type="text" onChange={onInputChange} name="num" value={contact.num} placeholder="num" />
-                    <input type="text" onChange={onInputChange} name="name" value={contact.name} placeholder="name" />
+                <h1>Leads-Manager</h1>
+                <h2>on the list now: {leads.length}</h2>
+                <form className="main-form" onSubmit={(ev) => onAddLead(ev)}>
+                    <input type="text" onChange={onInputChange} name="num" value={lead.num} placeholder="num" />
+                    <input type="text" onChange={onInputChange} name="name" value={lead.name} placeholder="name" />
                     <button>add</button>
                 </form>
                 <div className="zoom-clear-wrapper">
                     <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
                     <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
                 </div>
-                <ContactFilter onSetFilter={onSetFilter} />
+                <LeadFilter onSetFilter={onSetFilter} />
             </section>
             {/* <section className="main-container"> */}
-            <ContactList contacts={contacts} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteContact={onDeleteContact} onAddInfo={onAddInfo} />
+            <LeadList leads={leads} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteLead={onDeleteLead} onAddInfo={onAddInfo} />
             {/* </section> */}
         </main>
     )

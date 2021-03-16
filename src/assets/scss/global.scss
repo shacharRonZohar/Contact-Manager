@@ -10,9 +10,10 @@
 @import "./basics/layout";
 
 // Components
-@import "./componenets/contactPreview";
-@import "./componenets/contactFilter";
-@import "./componenets/contactList";
+@import "./componenets/leadPreview";
+@import "./componenets/leadFilter";
+@import "./componenets/leadList";
+@import "./componenets/editMsgs";
 
 // Views
 @import "./views/home";

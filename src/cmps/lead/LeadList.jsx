@@ -1,25 +1,24 @@
 import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import { ContactPreview } from './ContactPreview'
+import { LeadPreview } from './LeadPreview'
 
-export function ContactList({ contacts, onSendMsg, onDeleteContact, onAddInfo, onDragEnd }) {
-    console.log("🚀 ~ file: ContactList.jsx ~ line 4 ~ ContactList ~ contacts", contacts)
+export function LeadList({ leads, onSendMsg, onDeleteLead, onAddInfo, onDragEnd }) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'contactList'}>
+            <Droppable droppableId={'leadList'}>
                 {(provided) => (
-                    <ul className="contact-list clean-list flex column"
+                    <ul className="lead-list clean-list flex column"
                         ref={provided.innerRef}
                         {...provided.droppableProps}>
 
                         {
-                            contacts.map((contact, idx) => <ContactPreview key={contact.id}
+                            leads.map((lead, idx) => <LeadPreview key={lead.id}
                                 idx={idx}
                                 onAddInfo={onAddInfo}
-                                contact={contact}
+                                lead={lead}
                                 onSendMsg={onSendMsg}
-                                onDeleteContact={onDeleteContact}
-                            ></ContactPreview>)
+                                onDeleteLead={onDeleteLead}
+                            ></LeadPreview>)
                         }
                         {provided.placeholder}
                     </ul>

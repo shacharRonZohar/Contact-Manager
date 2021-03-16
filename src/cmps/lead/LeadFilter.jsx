@@ -1,12 +1,12 @@
 
-export function ContactFilter({ onSetFilter }) {
+export function LeadFilter({ onSetFilter }) {
 
     const handleChange = ({ target }) => {
         onSetFilter({ status: target.value })
     }
 
     return (
-        <form className="contact-filter">
+        <form className="lead-filter">
             <label htmlFor="all">
             <input type="radio" name="status" id="all" value="" onChange={handleChange} />
             all
