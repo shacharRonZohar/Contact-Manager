@@ -1,4 +1,17 @@
 .app-header {
-    width: 100%;
-    // padding: 10px;
+    background-color: #fff;
+    position: fixed;
+    width:100%;
+    height: $header-height;
+    border-bottom: 1px solid #95adbe;
+    padding-inline-start: 15px;
+    z-index: 2;
+
+    .logo {
+        margin-inline-end: 20px;
+    }
+    
+    nav {
+        width: 20%;
+    }
 }

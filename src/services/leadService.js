@@ -7,23 +7,31 @@ const LEAD_KEY = 'myLeads'
 export const leadService = {
     addLead,
     getLeads,
+    getSavedLists,
     sendMsg,
     setLeadStatus,
     remove,
     addInfo,
-    updateLeadIdx
+    updateLeadIdx,
+    saveList,
+    sendAll,
+    setLeadsList
 }
 
 var gLeads = storageService.loadFromStorage(LEAD_KEY) || []
+var gLeadLists = storageService.loadFromStorage('leadLists') || [];
 
 function getLeads(filter = {}) {
     if (!filter.status) return gLeads;
     const leads = gLeads.filter(lead => lead.status === filter.status)
     return leads
 }
+ 
+function getSavedLists() {
+    return gLeadLists;
+}
 
 function addLead(lead) {
-    console.log("🚀 ~ file: leadService.js ~ line 6 ~ sendMsg ~ num", lead.num)
     if (!lead.num || lead.num.length < 10) {
         console.log('invalid num');
         return
@@ -32,7 +40,7 @@ function addLead(lead) {
 }
 
 function sendMsg(lead, status, url) {
-    let valiNum = _getValidNum(lead.num)
+    let validNum = _getValidNum(lead.num)
     let res;
     switch (status) {
         case 'first-step': {
@@ -45,7 +53,7 @@ function sendMsg(lead, status, url) {
             res = encodeURI(msg);
             break;
         }
-        case 'third-step':{
+        case 'third-step': {
             const msg = msgService.createMsg('start')
             res = encodeURI(msg);
             break;
@@ -54,11 +62,11 @@ function sendMsg(lead, status, url) {
             break;
     }
     setLeadStatus(lead.id, status)
-    window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+    window.open(`https://wa.me/972${validNum}/?text=${res}`)
 }
 
 
-function setLeadStatus(leadId, newStatus) {
+function setLeadStatus(leadId, newStatus) {    
     const idx = _getIdxById(leadId)
     gLeads[idx].status = newStatus
     _saveToStorage()
@@ -81,6 +89,32 @@ function updateLeadIdx(newIdx, PrevIdx) {
     const leadArr = gLeads.splice(PrevIdx, 1)
     gLeads.splice(newIdx, 0, leadArr[0])
     _saveToStorage()
+}
+
+function saveList(leads, title) {
+    const newList = {
+        id: utilService.makeId(4),
+        title,
+        leads
+    }
+    const leadLists = storageService.loadFromStorage('leadLists') || [];
+    leadLists.push(newList);
+    storageService.saveToStorage('leadLists', leadLists)
+    gLeadLists = leadLists
+}
+
+function sendAll(leads, currStatus, url) {
+    if (currStatus === 'first-step') currStatus = 'second-step';
+    else if (currStatus === 'second-step') currStatus = 'third-step';
+    else if (!currStatus) currStatus = 'first-step';
+
+    leads.forEach((lead) => {
+        sendMsg(lead, currStatus, url)
+    })
+}
+
+function setLeadsList(leads) {
+    gLeads = [...leads]
 }
 
 
@@ -110,19 +144,19 @@ function _saveToStorage() {
 
 
 // function sendCheckMsg(lead) {
-//     let valiNum = _getValidNum(lead.num)
+//     let validNum = _getValidNum(lead.num)
 //     let res = encodeURI(`אהלן ${lead.name}! זה מתן מקודינג אקדמי:) היום ערב ההכרות שלנו! את/ה מגיע/ה?`); 
-//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+//     window.open(`https://wa.me/972${validNum}/?text=${res}`)
 // }
 
 // function sendInvitation(url , num) {
-//     let valiNum = _getValidNum(num)
+//     let validNum = _getValidNum(num)
 //     let res = encodeURI(`זה הלינק לערב ההכרות שמתחיל בשעה 18:00:\n\n ${url} \n\n כדאי להכנס קצת לפני כדי לראות שאין בעיות טכניות. \n\n מחכה לראותך!:)`); 
-//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+//     window.open(`https://wa.me/972${validNum}/?text=${res}`)
 // }
 
 // function sendStartMsg(num) {
-//     let valiNum = _getValidNum(num)
+//     let validNum = _getValidNum(num)
 //     let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`); 
-//     window.open(`https://wa.me/972${valiNum}/?text=${res}`)
+//     window.open(`https://wa.me/972${validNum}/?text=${res}`)
 // }

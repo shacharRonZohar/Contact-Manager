@@ -1,25 +1,44 @@
 .homepage {
 
+    display: grid;
+    grid-template-columns: 20vw 1fr;
+    padding-top: $header-height;
+
     .main-section {
-        padding-top: 10px;
-        height: 200px;
-        position: sticky;
+        // padding-top: $header-height;
+        height: calc(100vh - 50px);
         top: 0;
-        width: 100%;
         background-color: #fff;
-        border-bottom: 1px solid #95adbe;
+        border-inline-end: 1px solid #95adbe;
 
-        .main-form{
-            // margin-bottom: 15px;
-        }
-
-        .main-form>*:not(button) {
+        input {
             height: 2rem;
             border-radius: 5px;
             border: 1.5px solid $clr4;
             outline: none;
-            margin-inline-end: 5px;
+            margin-bottom: 7px;
+        }
+
+        h3 {
+            margin-bottom: 7px;
+        }
+
+        .main-form {
+
+            button {
+                margin: 0;
+            }
         }
     }
-    
+
+    .main-list {
+        height: calc(100vh - 50px);
+        overflow: auto;
+
+        .main-list-header {
+            // position: sticky;
+            // padding-top: $header-height;
+        }
+    }
+
 }

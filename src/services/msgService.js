@@ -23,7 +23,6 @@ function createMsg(type, data) {
 }
 
 function setMsgTemplate(template) {
-    console.log("🚀 ~ file: msgService.js ~ line 23 ~ setMsgTemplate ~ template", template)
     gTemplate = template
     _saveToStorage()
 }

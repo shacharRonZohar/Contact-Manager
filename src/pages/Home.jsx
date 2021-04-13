@@ -1,36 +1,47 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { LeadFilter } from '../cmps/lead/LeadFilter'
 import { LeadList } from '../cmps/lead/LeadList'
+import LeadSavedLists from '../cmps/lead/LeadSavedList'
 import { leadService } from '../services/leadService'
 import { storageService } from '../services/storageService'
 
 export function Home() {
-
     const [leads, setLeads] = useState([])
     const [lead, setLead] = useState({ name: '', num: '', status: '', info: '' })
     const [zoomUrl, setZoomUrl] = useState('')
     const [filter, setFilter] = useState({ status: '' })
+    const [listToSave, setSavedList] = useState({ title: ''})
+    const [savedLists, setSavedLists] = useState([])
 
     useEffect(() => {
         loadLeads()
     }, [lead, filter])
 
+    useEffect(() => {
+        loadLists()
+    }, [listToSave])
+
     const loadLeads = () => {
-        console.log("filter:", filter);
         const leads = leadService.getLeads(filter)
         setLeads([...leads])
     }
 
+    const loadLists = () => {
+        const savedLists = leadService.getSavedLists()
+        setSavedLists([...savedLists])
+    }
+
     const onAddLead = (ev) => {
         ev.preventDefault();
-        console.log(lead);
         leadService.addLead(lead)
         setLead({ name: '', num: '' })
     }
 
-    const onInputChange = (ev) => {
+    const onInputChange = ({ target }) => {
+        const { value, name } = target
+        if (name === 'list-title') setSavedList({ title: value })
         setLead({
-            ...lead, [ev.target.name]: ev.target.value
+            ...lead, [name]: value
         })
     }
 
@@ -55,46 +66,68 @@ export function Home() {
 
     const onAddInfo = (ev, leadId) => {
         const txt = ev.target.textContent
-        console.log(ev.target.textContent, leadId);
         leadService.addInfo(txt, leadId)
     }
 
+    const onSaveList = (ev) => {
+        ev.preventDefault()
+        leadService.saveList(leads, listToSave.title)
+        setSavedList({ title: '' })
+    }
+
     const onSetFilter = (filter) => {
-        console.log("🚀 ~ file: Home.jsx ~ line 63 ~ onSetFilter ~ filter", filter)
         setFilter(filter)
+    }
+
+    const onSendAll = () => {
+        leadService.sendAll(leads, filter.status, zoomUrl)
+        loadLeads()
     }
 
     const onDragEnd = useCallback((res) => {
         // the only one that is required
-        const { destination, source, draggableId } = res;
+        const { destination, source } = res;
         if (!destination) return
         const newIdx = destination.index
         const prevIdx = source.index
         leadService.updateLeadIdx(newIdx, prevIdx)
-        console.log(res);
         loadLeads()
     }, []);
 
+    const setCurrList = (currLeads) => {
+        leadService.setLeadsList(currLeads)
+        loadLeads()
+    }
 
     return (
         <main className="homepage">
-            <section className="main-section flex column space-between align-center">
-                <h1>Leads-Manager</h1>
-                <h2>on the list now: {leads.length}</h2>
-                <form className="main-form" onSubmit={(ev) => onAddLead(ev)}>
+            <section className="main-section flex column space-around align-center">
+                <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
+                <form className="main-form flex column align-center" onSubmit={(ev) => onAddLead(ev)}>
+                    <h3>Add Lead</h3>
                     <input type="text" onChange={onInputChange} name="num" value={lead.num} placeholder="num" />
                     <input type="text" onChange={onInputChange} name="name" value={lead.name} placeholder="name" />
                     <button>add</button>
                 </form>
-                <div className="zoom-clear-wrapper">
+                <div className="zoom-wrapper">
+                    <h3>Insert Url</h3>
                     <input type="text" placeholder="ZOOM url" onChange={onSetZoomUrl} />
-                    <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
                 </div>
-                <LeadFilter onSetFilter={onSetFilter} />
+                <form className="save-list-form flex column align-center" onSubmit={onSaveList}>
+                    <h3>Save List</h3>
+                    <input type="text" name="list-title" placeholder="insert title" onChange={onInputChange} value={listToSave.title} required />
+                    <button className="save-list-btn">save this list</button>
+                </form>
+                <button onClick={onSendAll}>send all</button>
             </section>
-            {/* <section className="main-container"> */}
-            <LeadList leads={leads} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteLead={onDeleteLead} onAddInfo={onAddInfo} />
-            {/* </section> */}
+            <section className="main-list">
+                <div className="main-list-header">
+                    <h2>on the list now: {leads.length}</h2>
+                    <LeadFilter onSetFilter={onSetFilter} />
+                </div>
+                <LeadList leads={leads} onDragEnd={onDragEnd} onSendMsg={onSendMsg} onDeleteLead={onDeleteLead} onAddInfo={onAddInfo} />
+            </section>
+            <LeadSavedLists savedLists={savedLists} setCurrList={setCurrList} />
         </main>
     )
 }
