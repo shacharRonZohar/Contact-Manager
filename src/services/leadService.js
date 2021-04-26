@@ -22,7 +22,7 @@ var gLeads = storageService.loadFromStorage(LEAD_KEY) || []
 var gLeadLists = storageService.loadFromStorage('leadLists') || [];
 
 function getLeads(filter = {}) {
-    if (!filter.status) return gLeads;
+    if (!filter.status) return [...gLeads];
     const leads = gLeads.filter(lead => lead.status === filter.status)
     return leads
 }

@@ -1,7 +1,7 @@
 .app-header {
     background-color: #fff;
     position: fixed;
-    width:100%;
+    width: 100%;
     height: $header-height;
     border-bottom: 1px solid #95adbe;
     padding-inline-start: 15px;
@@ -10,8 +10,18 @@
     .logo {
         margin-inline-end: 20px;
     }
-    
+
     nav {
         width: 20%;
+    }
+
+    @include for-mobile-layout {
+        justify-content: space-around;
+        flex-direction: column;
+        padding-inline-start: 0;
+
+        nav,.logo {
+            width: 70%;
+        }
     }
 }

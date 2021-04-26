@@ -4,6 +4,10 @@
 
 html {
     height: 100vh;
+
+    @include for-mobile-layout {
+        font-size: 14px;
+    }
 }
 
 body {

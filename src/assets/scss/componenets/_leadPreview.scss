@@ -3,15 +3,26 @@
     padding: 10px;
     width: 100%;
     min-height: rem(100px);
+    flex-wrap: wrap;
+    gap: 2px;
 
     &>* {
         width: 30%;
-    }
 
-    .lead-actions {
-        // >* {
-        //     width: 50%;
-        // }
+
+        @include for-mobile-layout {
+
+            &:not(:last-child) {
+                width: calc(50% - 2px); // the gap size
+                margin-bottom: 10px;
+            }
+
+            &:last-child {
+                width: 100%;
+                justify-content: center;
+                justify-content: space-around;
+            }
+        }
     }
 
     p {

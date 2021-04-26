@@ -29,6 +29,15 @@
                 margin: 0;
             }
         }
+
+        @include for-mobile-layout {
+
+            >* {
+                position: absolute;
+                transform: translate(-100%)
+            }
+        
+        }
     }
 
     .main-list {
@@ -39,6 +48,14 @@
             // position: sticky;
             // padding-top: $header-height;
         }
+
+        @include for-mobile-layout {
+            width: 100%;
+        }
+    }
+
+    @include for-mobile-layout {
+        grid-template-columns: 10vw 1fr;
     }
 
 }

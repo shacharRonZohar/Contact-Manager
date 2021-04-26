@@ -86,18 +86,20 @@ export function Home() {
 
     const onDragEnd = useCallback((res) => {
         // the only one that is required
-        const { destination, source } = res;
+        const { destination, source, draggableId } = res;
         if (!destination) return
+        console.log("🚀 ~ file: Home.jsx ~ line 91 ~ onDragEnd ~ destination", destination)
         const newIdx = destination.index
         const prevIdx = source.index
         leadService.updateLeadIdx(newIdx, prevIdx)
         loadLeads()
-    }, []);
+    }, [leads, filter]);
 
     const setCurrList = (currLeads) => {
         leadService.setLeadsList(currLeads)
         loadLeads()
     }
+    
 
     return (
         <main className="homepage">
