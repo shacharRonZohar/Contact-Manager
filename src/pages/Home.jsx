@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, createContext } from 'react'
 import AsideBar from '../cmps/AsideBar'
 import { LeadFilter } from '../cmps/lead/LeadFilter'
 import { LeadList } from '../cmps/lead/LeadList'
 import LeadSavedLists from '../cmps/lead/LeadSavedList'
 import { leadService } from '../services/leadService'
+import { InfoContext } from '../contexts/InfoContext'
 
 export function Home() {
   const [leads, setLeads] = useState([])
@@ -117,13 +118,15 @@ export function Home() {
           <h2>on the list now: {leads.length}</h2>
           <LeadFilter onSetFilter={onSetFilter} />
         </div>
-        <LeadList
-          leads={leads}
-          onDragEnd={onDragEnd}
-          onSendMsg={onSendMsg}
-          onDeleteLead={onDeleteLead}
-          onAddInfo={onAddInfo}
-        />
+        <InfoContext.Provider value={['no-answer', 'invite', 'start', 'check']}>
+          <LeadList
+            leads={leads}
+            onDragEnd={onDragEnd}
+            onSendMsg={onSendMsg}
+            onDeleteLead={onDeleteLead}
+            onAddInfo={onAddInfo}
+          />
+        </InfoContext.Provider>
       </section>
       <LeadSavedLists savedLists={savedLists} setCurrList={setCurrList} />
     </main>

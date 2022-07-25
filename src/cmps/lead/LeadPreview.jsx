@@ -1,10 +1,8 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import { InfoContext } from '../../contexts/InfoContext'
 
 export function LeadPreview({ lead, onSendMsg, onDeleteLead, onAddInfo, idx }) {
-
-  const btnsInfo = ['invitation', 'check', 'start']
-
   return (
     <Draggable draggableId={lead.id} index={idx}>
       {provided => (
@@ -16,12 +14,14 @@ export function LeadPreview({ lead, onSendMsg, onDeleteLead, onAddInfo, idx }) {
           <p suppressContentEditableWarning={true} contentEditable onInput={(ev) => onAddInfo(ev, lead.id)}>{lead.info}</p>
           <section className="lead-actions flex space-between">
             {/* <div className="lead-action-wrapper"> */}
-            {btnsInfo.map(btnName => <button
-              key={btnName}
-              className={`lead-action-btn ${btnName}`}
-              onClick={() => onSendMsg(lead, btnName)}
-            >{btnName}</button>
-            )}
+            <InfoContext.Consumer>
+              {btnsInfo => btnsInfo.map(btnName => <button
+                key={btnName}
+                className={`lead-action-btn ${btnName}`}
+                onClick={() => onSendMsg(lead, btnName)}
+              >{btnName}</button>
+              )}
+            </InfoContext.Consumer>
             {/* <button onClick={() => onSendMsg(lead, 'first-step')}>check</button>
             <button onClick={() => onSendMsg(lead, 'second-step')}>invitation</button> */}
             {/* </div> */}
