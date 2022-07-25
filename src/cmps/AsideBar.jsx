@@ -21,7 +21,7 @@ export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, o
         <input type="text" onChange={onInputChange} name="fName" required value={lead.fName} placeholder="First Name" />
         <input type="text" onChange={onInputChange} name="lName" required value={lead.lName} placeholder="Last Name" />
         <label htmlFor="status">Status</label>
-          <select name="" id="">
+          <select name="status" onChange={onInputChange} value={lead.status}>
           <option value="">Select Status</option>
         <InfoContext.Consumer>
           {btnsInfo=>btnsInfo.map(status=><option key={status} value={status}>{status}</option>)}

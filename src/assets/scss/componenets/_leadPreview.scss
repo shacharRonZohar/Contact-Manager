@@ -1,49 +1,49 @@
 .lead-preview {
-    border-bottom: 1px solid $clr4;
+  border-bottom: 1px solid $clr4;
+  padding: 10px;
+  width: 100%;
+  min-height: rem(100px);
+  flex-wrap: wrap;
+  gap: 2px;
+
+  & > * {
+    width: 30%;
+
+    @include for-mobile-layout {
+      &:not(:last-child) {
+        width: calc(50% - 2px); // the gap size
+        margin-bottom: 10px;
+      }
+
+      &:last-child {
+        width: 100%;
+        justify-content: center;
+        justify-content: space-around;
+      }
+    }
+  }
+
+  p {
+    cursor: text;
+    border: 1px solid $clr4;
+    font-size: 1.1rem;
     padding: 10px;
-    width: 100%;
-    min-height: rem(100px);
-    flex-wrap: wrap;
-    gap: 2px;
-
-    &>* {
-        width: 30%;
-
-
-        @include for-mobile-layout {
-
-            &:not(:last-child) {
-                width: calc(50% - 2px); // the gap size
-                margin-bottom: 10px;
-            }
-
-            &:last-child {
-                width: 100%;
-                justify-content: center;
-                justify-content: space-around;
-            }
-        }
-    }
-
-    p {
-        cursor: text;
-        border: 1px solid $clr4;
-        font-size: 1.1rem;
-        padding: 10px;
-        border-radius: 5px;
-
-
-    }
+    border-radius: 5px;
+  }
 }
 
-.first-step {
-    background-color: #f8fabe;
+.no-answer {
+  background-color: rgba(252, 180, 87, 0.966);
 }
 
-.second-step {
-    background-color: #bed7fa;
+.invite {
+  background-color: #f8fabe;
 }
 
-.third-step {
-    background-color: #befac4;
+.check {
+  background-color: #bed7fa;
+}
+
+.start {
+  background-color: #befac4;
 }
