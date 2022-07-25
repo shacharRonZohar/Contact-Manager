@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { storageService } from '../services/storageService'
 import { utilService } from '../services/utilService'
-
+import { InfoContext } from '../contexts/InfoContext'
+console.log(InfoContext)
 export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, onSetZoomUrl, onSaveList, onSendAll, isValidNum }) {
 
   const [isMobileScreen, setIsMobileScreen] = useState(false)
@@ -10,6 +11,7 @@ export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, o
     storageService.saveToStorage('myLeads', null)
     window.location.reload()
   }
+
   return (
     <section className={`aside-bar flex column space-around align-center ${isMobileScreen ? 'screen-open' : ''}`}>
       <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
@@ -19,10 +21,11 @@ export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, o
         <input type="text" onChange={onInputChange} name="fName" required value={lead.fName} placeholder="First Name" />
         <input type="text" onChange={onInputChange} name="lName" required value={lead.lName} placeholder="Last Name" />
         <label htmlFor="status">Status</label>
-        <select name="status" value={lead.status} onChange={onInputChange}>
+          <select name="" id="">
           <option value="">Select Status</option>
-          <option value="zero-step">Invite to open night</option>
-          {/* <option value="first-step">Invite to open night</option> */}
+        <InfoContext.Consumer>
+          {btnsInfo=>btnsInfo.map(status=><option key={status} value={status}>{status}</option>)}
+        </InfoContext.Consumer>
         </select>
         <button>add</button>
       </form>

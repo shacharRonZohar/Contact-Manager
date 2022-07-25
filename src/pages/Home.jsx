@@ -104,6 +104,7 @@ export function Home() {
 
   return (
     <main className="homepage">
+      <InfoContext.Provider value={['no-answer', 'invite', 'start', 'check']}>
       <AsideBar
         lead={lead}
         listToSave={listToSave}
@@ -118,7 +119,6 @@ export function Home() {
           <h2>on the list now: {leads.length}</h2>
           <LeadFilter onSetFilter={onSetFilter} />
         </div>
-        <InfoContext.Provider value={['no-answer', 'invite', 'start', 'check']}>
           <LeadList
             leads={leads}
             onDragEnd={onDragEnd}
@@ -126,8 +126,8 @@ export function Home() {
             onDeleteLead={onDeleteLead}
             onAddInfo={onAddInfo}
           />
-        </InfoContext.Provider>
       </section>
+        </InfoContext.Provider>
       <LeadSavedLists savedLists={savedLists} setCurrList={setCurrList} />
     </main>
   )
