@@ -35,7 +35,7 @@ function addLead(lead) {
   if (!lead.num || lead.num.length < 10) {
     console.log('invalid num')
     return
-  };
+  }
   _saveLead(lead)
 }
 

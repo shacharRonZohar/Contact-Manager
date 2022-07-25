@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { storageService } from '../services/storageService'
+import { utilService } from '../services/utilService'
 
-export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, onSetZoomUrl, onSaveList, onSendAll }) {
+export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, onSetZoomUrl, onSaveList, onSendAll, isValidNum }) {
 
   const [isMobileScreen, setIsMobileScreen] = useState(false)
 
@@ -9,13 +10,12 @@ export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, o
     storageService.saveToStorage('myLeads', null)
     window.location.reload()
   }
-
   return (
     <section className={`aside-bar flex column space-around align-center ${isMobileScreen ? 'screen-open' : ''}`}>
       <button className="clear-btn" onClick={() => onClearStorage()}>clear storage</button>
       <form className="main-form flex column align-center" onSubmit={(ev) => onAddLead(ev)}>
         <h3>Add Lead</h3>
-        <input type="text" onChange={onInputChange} name="num" value={lead.num} placeholder="Phone number" />
+        <input type="phone" pattern={utilService.getPhoneRegex()} required onChange={onInputChange} name="num" value={lead.num} placeholder="Phone number" />
         <input type="text" onChange={onInputChange} name="fName" value={lead.fName} placeholder="First Name" />
         <input type="text" onChange={onInputChange} name="lName" value={lead.lName} placeholder="Last Name" />
         <button>add</button>

@@ -37,7 +37,7 @@ export function Home() {
     setSavedLists([...savedLists])
   }
 
-  const onAddLead = (ev) => {
+  const onAddLead = async (ev) => {
     ev.preventDefault()
     leadService.addLead(lead)
     setLead({ fName: '', lName: '', num: '' })
