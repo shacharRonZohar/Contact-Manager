@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 
 export function LeadPreview({ lead, onSendMsg, onDeleteLead, onAddInfo, idx }) {
 
+  const btnsInfo = ['invitation', 'check', 'start']
 
   return (
     <Draggable draggableId={lead.id} index={idx}>
@@ -15,11 +16,17 @@ export function LeadPreview({ lead, onSendMsg, onDeleteLead, onAddInfo, idx }) {
           <p suppressContentEditableWarning={true} contentEditable onInput={(ev) => onAddInfo(ev, lead.id)}>{lead.info}</p>
           <section className="lead-actions flex space-between">
             {/* <div className="lead-action-wrapper"> */}
-            <button onClick={() => onSendMsg(lead, 'first-step')}>check</button>
-            <button onClick={() => onSendMsg(lead, 'second-step')}>invitation</button>
+            {btnsInfo.map(btnName => <button
+              key={btnName}
+              className={`lead-action-btn ${btnName}`}
+              onClick={() => onSendMsg(lead, btnName)}
+            >{btnName}</button>
+            )}
+            {/* <button onClick={() => onSendMsg(lead, 'first-step')}>check</button>
+            <button onClick={() => onSendMsg(lead, 'second-step')}>invitation</button> */}
             {/* </div> */}
             {/* <div className="lead-action-wrapper"> */}
-            <button onClick={() => onSendMsg(lead, 'third-step')}>start</button>
+            {/* <button onClick={() => onSendMsg(lead, 'third-step')}>start</button> */}
             <button onClick={() => onDeleteLead(lead.id)}>X</button>
             {/* </div> */}
           </section>
