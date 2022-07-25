@@ -39,7 +39,7 @@ export function Home() {
 
   const onAddLead = async (ev) => {
     ev.preventDefault()
-    leadService.addLead(lead)
+    leadService.saveLead(lead)
     setLead({ fName: '', lName: '', num: '' })
   }
 
@@ -49,6 +49,7 @@ export function Home() {
       ...lead,
       [name]: value,
     })
+    console.log(lead)
   }
 
   const onSendMsg = (currLead, status) => {

@@ -5,9 +5,9 @@ import { utilService } from "./utilService"
 const LEAD_KEY = 'myLeads'
 
 export const leadService = {
-  addLead,
   getLeads,
   getSavedLists,
+  saveLead,
   sendMsg,
   setLeadStatus,
   remove,
@@ -31,12 +31,10 @@ function getSavedLists() {
   return gLeadLists
 }
 
-function addLead(lead) {
-  if (!lead.num || lead.num.length < 10) {
-    console.log('invalid num')
-    return
-  }
-  _saveLead(lead)
+function saveLead(lead) {
+  lead.id = utilService.makeId()
+  gLeads.push(lead)
+  _saveToStorage()
 }
 
 function sendMsg(lead, status, url) {
@@ -128,11 +126,6 @@ function _getIdxById(id) {
   return gLeads.findIndex(lead => lead.id === id)
 }
 
-function _saveLead(lead) {
-  lead.id = utilService.makeId()
-  gLeads.push(lead)
-  _saveToStorage()
-}
 
 function _saveToStorage() {
   storageService.saveToStorage(LEAD_KEY, gLeads)
@@ -159,4 +152,13 @@ function _saveToStorage() {
 //     let validNum = _getValidNum(num)
 //     let res = encodeURI(`מתחילים עוד כמה דקות! כדאי להכנס ולראות אם הכל עובד כמו שצריך:)`);
 //     window.open(`https://wa.me/972${validNum}/?text=${res}`)
+// }
+
+// function addLead(lead) {
+//   if (!lead.num || lead.num.length < 10) {
+//     console.log('invalid num')
+//     return false
+//   };
+//   _saveLead(lead)
+//   return true
 // }

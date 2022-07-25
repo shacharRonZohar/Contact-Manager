@@ -16,8 +16,14 @@ export default function AsideBar({ lead, listToSave, onAddLead, onInputChange, o
       <form className="main-form flex column align-center" onSubmit={(ev) => onAddLead(ev)}>
         <h3>Add Lead</h3>
         <input type="phone" pattern={utilService.getPhoneRegex()} required onChange={onInputChange} name="num" value={lead.num} placeholder="Phone number" />
-        <input type="text" onChange={onInputChange} name="fName" value={lead.fName} placeholder="First Name" />
-        <input type="text" onChange={onInputChange} name="lName" value={lead.lName} placeholder="Last Name" />
+        <input type="text" onChange={onInputChange} name="fName" required value={lead.fName} placeholder="First Name" />
+        <input type="text" onChange={onInputChange} name="lName" required value={lead.lName} placeholder="Last Name" />
+        <label htmlFor="status">Status</label>
+        <select name="status" value={lead.status} onChange={onInputChange}>
+          <option value="">Select Status</option>
+          <option value="zero-step">Invite to open night</option>
+          {/* <option value="first-step">Invite to open night</option> */}
+        </select>
         <button>add</button>
       </form>
       <div className="zoom-wrapper">
